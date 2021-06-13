@@ -16,6 +16,9 @@ def get_price(ticker):
     response = requests.get(url)
     company_info = response.json()
 
+    if response.status_code < 400:
+        return Response({}, status=404, mimetype='application/json')
+
     print(company_info)
 
     price = company_info['quoteSummary']['result'][0]['price']['regularMarketPrice']['raw']
@@ -31,7 +34,7 @@ def get_price(ticker):
     }
     print(result)
 
-    return Response(json.dumps(result))
+    return Response(json.dumps(result), status=200, mimetype='application/json')
 
 
 if __name__ == '__main__':
